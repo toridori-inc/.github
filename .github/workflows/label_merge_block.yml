@@ -1,8 +1,10 @@
 name: Block Merge on Specific Label
 
 on:
+  pull_request:
+    types: [opened, reopened, labeled, unlabeled, synchronize]
  # workflow_callを設定することでreusableとして扱えるようにする
-  workflow_call
+  workflow_call:
 
 jobs:
   block-merge:
