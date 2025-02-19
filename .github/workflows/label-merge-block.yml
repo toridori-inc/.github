@@ -1,0 +1,20 @@
+name: Block Merge on Specific Label
+
+on:
+  pull_request:
+    types: [opened, reopened, labeled, unlabeled, synchronize]
+
+jobs:
+  block-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for Block Label
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const labelToBlock = 'DO_NOT_MERGE'; // ブロックしたいラベル名を指定
+            const prLabels = context.payload.pull_request.labels.map(label => label.name);
+
+            if (prLabels.includes(labelToBlock)) {
+              throw new Error(`この PR には '${labelToBlock}' ラベルが付いているため、マージがブロックされています`);
+            }
